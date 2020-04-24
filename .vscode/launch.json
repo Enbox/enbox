@@ -11,10 +11,28 @@
             "flutterMode": "debug"
         },
         {
+            "name": "Flutter debug (CanavsKit)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=FLUTTER_WEB_USE_SKIA=true"
+            ]
+        },
+        {
             "name": "Flutter release",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Flutter release (CanvasKit)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=FLUTTER_WEB_USE_SKIA=true"
+            ]
         }
     ]
 }

@@ -1,85 +1,54 @@
 import 'package:enbox/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:enbox/common.dart';
+import "package:enbox/theme.dart";
+import "package:flutter/material.dart";
 
-void main() => runApp(
-  EnboxConstants(
-    child: EnboxApp(),
-  ),
-);
+void main() => runApp(EnboxApp());
 
 class EnboxApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    EnboxConstants constants = EnboxConstants.of(context);
     return MaterialApp(
-      title: constants.displayName,
-      theme: ThemeData(
-        primaryColor: constants.color,
-      ),
-      home: EnboxHome(title: constants.displayName),
+      theme: EnboxTheme.fallback,
+      initialRoute: "/today",
+      routes: {
+        RouteNames.today: (_) => TodayPage(),
+      },
     );
   }
 }
 
-class EnboxHome extends StatefulWidget {
-  EnboxHome({Key key, this.title}) : super(key: key);
-  final String title;
-  @override
-  EnboxHomeState createState() => EnboxHomeState();
-}
-
-class EnboxHomeState extends State<EnboxHome> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class TodayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    EnboxConstants constants = EnboxConstants.of(context);
+    final Widget testTile = const EnboxTile(
+      sender: "Sender",
+      smallNumber: 2,
+      subject: "Subject here",
+      body:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    );
+    final Widget testGroup = Card(
+      child: ListView(
+        children: ListTile.divideTiles(
+          context: context,
+          tiles: List.filled(5, testTile),
+        ).toList(),
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      semanticContainer: true,
+    );
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              accountName: Text(constants.demoName),
-              accountEmail: Text(constants.demoEmail),
-              currentAccountPicture: Icon(
-                Icons.account_circle,
-                size: 50.0,
-                color: Colors.white
-              ),
-            )
-          ],
-        )
-      ),
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 13.0),
-            child: Icon(
-              Icons.search,
-              size: 25.0
-            )
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('You have pushed the button this many times!'),
-            Text('$_counter', style: Theme.of(context).textTheme.display1),
-          ],
-        )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        child: Icon(Icons.edit),
-        backgroundColor: Theme.of(context).primaryColor,
+      appBar: EnboxAppBar(),
+      drawer: EnboxDrawer(),
+      body: ListView.separated(
+        padding: const EdgeInsets.only(top: 31, left: 239, right: 239),
+        itemBuilder: (context, _) => testGroup,
+        separatorBuilder: (context, _) => const SizedBox(
+          height: 67,
+        ),
+        itemCount: 5,
       ),
     );
   }

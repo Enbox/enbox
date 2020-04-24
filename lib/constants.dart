@@ -1,12 +1,21 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-class EnboxConstants extends InheritedWidget {
-  static EnboxConstants of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<EnboxConstants>();
-  const EnboxConstants({Widget child, Key key}): super(key: key, child: child);
 
-  final String displayName = "enbox";
-  final Color color = Colors.blue;
-  final String demoName = "Enbox Demo 2.1";
-  final String demoEmail = "enbox@enbox.com";
-  @override
-  bool updateShouldNotify(EnboxConstants oldWidget) => false;
+/// Route names for Enbox routes.
+abstract class RouteNames {
+  static const String today = "/today";
+}
+
+/// Page titles for Enbox pages.
+abstract class PageTitles {
+  static const String today = "Today";
+}
+
+/// Returns whether the given [BuildContext] is on a mobile platform.
+bool isMobile(BuildContext context) {
+  return !kIsWeb &&
+      [
+        TargetPlatform.android,
+        TargetPlatform.iOS,
+      ].contains(Theme.of(context).platform);
 }
